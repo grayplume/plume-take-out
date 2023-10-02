@@ -1,16 +1,20 @@
 package com.plume.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.plume.constant.MessageConstant;
 import com.plume.constant.PasswordConstant;
 import com.plume.constant.StatusConstant;
 import com.plume.context.BaseContext;
 import com.plume.dto.EmployeeDTO;
 import com.plume.dto.EmployeeLoginDTO;
+import com.plume.dto.EmployeePageQueryDTO;
 import com.plume.entity.Employee;
 import com.plume.exception.AccountLockedException;
 import com.plume.exception.AccountNotFoundException;
 import com.plume.exception.PasswordErrorException;
 import com.plume.mapper.EmployeeMapper;
+import com.plume.result.PageResult;
 import com.plume.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -88,6 +93,25 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param employeePageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        // select * from employee limit 0，10
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+
+        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
+
+        long total = page.getTotal();
+        List<Employee> records = page.getResult();
+
+        return new PageResult(total, records);
     }
 
 }

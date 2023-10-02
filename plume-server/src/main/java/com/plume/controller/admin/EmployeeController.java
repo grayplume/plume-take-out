@@ -3,8 +3,10 @@ package com.plume.controller.admin;
 import com.plume.constant.JwtClaimsConstant;
 import com.plume.dto.EmployeeDTO;
 import com.plume.dto.EmployeeLoginDTO;
+import com.plume.dto.EmployeePageQueryDTO;
 import com.plume.entity.Employee;
 import com.plume.properties.JwtProperties;
+import com.plume.result.PageResult;
 import com.plume.result.Result;
 import com.plume.service.EmployeeService;
 import com.plume.utils.JwtUtil;
@@ -13,10 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -88,6 +87,19 @@ public class EmployeeController {
         log.info("员工保存：{}", employeeDTO);
         employeeService.save(employeeDTO);
         return Result.success();
+    }
+
+    /**
+     * 员工分页查询
+     * @param employeePageQueryDTO
+     * @return
+     */
+    @GetMapping("/page")
+    @ApiOperation("员工分页查询")
+    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
+        log.info("员工分页查询：{}", employeePageQueryDTO);
+        PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
+        return Result.success(pageResult);
     }
 
 }

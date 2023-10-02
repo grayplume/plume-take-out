@@ -2,7 +2,9 @@ package com.plume.service;
 
 import com.plume.dto.EmployeeDTO;
 import com.plume.dto.EmployeeLoginDTO;
+import com.plume.dto.EmployeePageQueryDTO;
 import com.plume.entity.Employee;
+import com.plume.result.PageResult;
 
 public interface EmployeeService {
 
@@ -18,4 +20,11 @@ public interface EmployeeService {
      * @param employeeDTO
      */
     void save(EmployeeDTO employeeDTO);
+
+    /**
+     * 分页查询
+     * @param employeePageQueryDTO
+     * @return
+     */
+    PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 }
