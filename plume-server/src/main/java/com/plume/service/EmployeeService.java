@@ -1,5 +1,6 @@
 package com.plume.service;
 
+import com.plume.dto.EmployeeDTO;
 import com.plume.dto.EmployeeLoginDTO;
 import com.plume.entity.Employee;
 
@@ -12,4 +13,9 @@ public interface EmployeeService {
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
+    /**
+     * 员工保存
+     * @param employeeDTO
+     */
+    void save(EmployeeDTO employeeDTO);
 }

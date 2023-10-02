@@ -1,6 +1,7 @@
 package com.plume.controller.admin;
 
 import com.plume.constant.JwtClaimsConstant;
+import com.plume.dto.EmployeeDTO;
 import com.plume.dto.EmployeeLoginDTO;
 import com.plume.entity.Employee;
 import com.plume.properties.JwtProperties;
@@ -73,6 +74,19 @@ public class EmployeeController {
     @PostMapping("/logout")
     @ApiOperation(value = "员工退出")
     public Result<String> logout() {
+        return Result.success();
+    }
+
+    /**
+     * 新增员工
+     * @param employeeDTO
+     * @return
+     */
+    @PostMapping
+    @ApiOperation(value = "员工保存")
+    public Result save(@RequestBody EmployeeDTO employeeDTO){
+        log.info("员工保存：{}", employeeDTO);
+        employeeService.save(employeeDTO);
         return Result.success();
     }
 

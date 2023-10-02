@@ -1,7 +1,9 @@
 package com.plume.service.impl;
 
 import com.plume.constant.MessageConstant;
+import com.plume.constant.PasswordConstant;
 import com.plume.constant.StatusConstant;
+import com.plume.dto.EmployeeDTO;
 import com.plume.dto.EmployeeLoginDTO;
 import com.plume.entity.Employee;
 import com.plume.exception.AccountLockedException;
@@ -9,9 +11,12 @@ import com.plume.exception.AccountNotFoundException;
 import com.plume.exception.PasswordErrorException;
 import com.plume.mapper.EmployeeMapper;
 import com.plume.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.time.LocalDateTime;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -53,6 +58,35 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //3、返回实体对象
         return employee;
+    }
+
+    /**
+     * 员工保存
+     *
+     * @param employeeDTO
+     */
+    @Override
+    public void save(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+
+        // 属性拷贝
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        // 设置账号状态
+        employee.setStatus(StatusConstant.ENABLE);
+
+        // 设置默认密码
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+
+        // 设置时间
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+
+        // 设置创建人和修改人
+        employee.setCreateUser(10L);
+        employee.setUpdateUser(10L);
+
+        employeeMapper.insert(employee);
     }
 
 }
