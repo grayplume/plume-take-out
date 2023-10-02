@@ -3,6 +3,7 @@ package com.plume.service.impl;
 import com.plume.constant.MessageConstant;
 import com.plume.constant.PasswordConstant;
 import com.plume.constant.StatusConstant;
+import com.plume.context.BaseContext;
 import com.plume.dto.EmployeeDTO;
 import com.plume.dto.EmployeeLoginDTO;
 import com.plume.entity.Employee;
@@ -83,8 +84,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateTime(LocalDateTime.now());
 
         // 设置创建人和修改人
-        employee.setCreateUser(10L);
-        employee.setUpdateUser(10L);
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
     }

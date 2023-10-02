@@ -1,6 +1,7 @@
 package com.plume.interceptor;
 
 import com.plume.constant.JwtClaimsConstant;
+import com.plume.context.BaseContext;
 import com.plume.properties.JwtProperties;
 import com.plume.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -47,6 +48,10 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
             log.info("当前员工id：", empId);
+
+            // 将用户id存储
+            BaseContext.setCurrentId(empId);
+
             //3、通过，放行
             return true;
         } catch (Exception ex) {
