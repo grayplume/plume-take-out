@@ -2,10 +2,13 @@ package com.plume.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.plume.constant.MessageConstant;
+import com.plume.constant.StatusConstant;
 import com.plume.dto.SetmealDTO;
 import com.plume.dto.SetmealPageQueryDTO;
 import com.plume.entity.Setmeal;
 import com.plume.entity.SetmealDish;
+import com.plume.exception.DeletionNotAllowedException;
 import com.plume.mapper.DishMapper;
 import com.plume.mapper.SetmealDishMapper;
 import com.plume.mapper.SetmealMapper;
@@ -72,5 +75,28 @@ public class SetmealServiceImpl implements SetmealService {
         PageHelper.startPage(pageNum,pageSize);
         Page<SetmealVO> page = setmealMapper.pageQuery(setmealPageQueryDTO);
         return new PageResult(page.getTotal(),page.getResult());
+    }
+
+    /**
+     * 批量删除套餐
+     *
+     * @param ids
+     */
+    @Override
+    public void deleteBatch(List<Long> ids) {
+        ids.forEach(id -> {
+            Setmeal setmeal = setmealMapper.getById(id);
+            if (StatusConstant.ENABLE == setmeal.getStatus()){
+                // 起售中的套餐不能删除
+                throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
+            }
+        });
+
+        ids.forEach(setmealId ->{
+            // 删除套餐表中的数据
+            setmealMapper.deleteById(setmealId);
+            // 删除套餐菜品关系表中的数据
+            setmealDishMapper.deleteBySetmealId(setmealId);
+        });
     }
 }
