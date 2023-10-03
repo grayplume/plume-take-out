@@ -1,8 +1,11 @@
 package com.plume.mapper;
 
+import com.github.pagehelper.Page;
 import com.plume.annotation.AutoFill;
+import com.plume.dto.DishPageQueryDTO;
 import com.plume.entity.Dish;
 import com.plume.enumeration.OperationType;
+import com.plume.vo.DishVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -23,4 +26,11 @@ public interface DishMapper {
      */
     @AutoFill(value = OperationType.INSERT)
     void insert(Dish dish);
+
+    /**
+     * 菜品分页查询
+     * @param dishPageQueryDTO
+     * @return
+     */
+    Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 }

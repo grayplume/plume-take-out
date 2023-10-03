@@ -1,6 +1,8 @@
 package com.plume.service;
 
 import com.plume.dto.DishDTO;
+import com.plume.dto.DishPageQueryDTO;
+import com.plume.result.PageResult;
 
 public interface DishService {
 
@@ -10,4 +12,11 @@ public interface DishService {
      * @param dishDTO
      */
     void saveWithFlavor(DishDTO dishDTO);
+
+    /**
+     * 菜品分页查询
+     * @param dishPageQueryDTO
+     * @return
+     */
+    PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO);
 }

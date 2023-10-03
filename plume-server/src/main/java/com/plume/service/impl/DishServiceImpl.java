@@ -1,11 +1,16 @@
 package com.plume.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.plume.dto.DishDTO;
+import com.plume.dto.DishPageQueryDTO;
 import com.plume.entity.Dish;
 import com.plume.entity.DishFlavor;
 import com.plume.mapper.DishFlavorMapper;
 import com.plume.mapper.DishMapper;
+import com.plume.result.PageResult;
 import com.plume.service.DishService;
+import com.plume.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +53,18 @@ public class DishServiceImpl implements DishService {
         }
 
 
+    }
+
+    /**
+     * 菜品分页查询
+     *
+     * @param dishPageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO) {
+        PageHelper.startPage(dishPageQueryDTO.getPage(),dishPageQueryDTO.getPageSize());
+        Page<DishVO> page = dishMapper.pageQuery(dishPageQueryDTO);
+        return new PageResult(page.getTotal(), page.getResult());
     }
 }
