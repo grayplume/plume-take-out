@@ -1,6 +1,8 @@
 package com.plume.service;
 
 import com.plume.dto.SetmealDTO;
+import com.plume.dto.SetmealPageQueryDTO;
+import com.plume.result.PageResult;
 
 public interface SetmealService {
     /**
@@ -8,4 +10,11 @@ public interface SetmealService {
      * @param setmealDTO
      */
     void saveWithDish(SetmealDTO setmealDTO);
+
+    /**
+     * 分页查询
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 }

@@ -1,8 +1,11 @@
 package com.plume.mapper;
 
+import com.github.pagehelper.Page;
 import com.plume.annotation.AutoFill;
+import com.plume.dto.SetmealPageQueryDTO;
 import com.plume.entity.Setmeal;
 import com.plume.enumeration.OperationType;
+import com.plume.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -30,4 +33,11 @@ public interface SetmealMapper {
      */
     @AutoFill(OperationType.INSERT)
     void insert(Setmeal setmeal);
+
+    /**
+     * 分页查询
+     * @param setmealPageQueryDTO
+     * @return
+     */
+    Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
 }
