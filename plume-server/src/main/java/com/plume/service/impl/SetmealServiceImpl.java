@@ -6,6 +6,7 @@ import com.plume.constant.MessageConstant;
 import com.plume.constant.StatusConstant;
 import com.plume.dto.SetmealDTO;
 import com.plume.dto.SetmealPageQueryDTO;
+import com.plume.entity.Dish;
 import com.plume.entity.Setmeal;
 import com.plume.entity.SetmealDish;
 import com.plume.exception.DeletionNotAllowedException;
@@ -98,5 +99,79 @@ public class SetmealServiceImpl implements SetmealService {
             // 删除套餐菜品关系表中的数据
             setmealDishMapper.deleteBySetmealId(setmealId);
         });
+    }
+
+    /**
+     * 根据id查询套餐和关联菜品关系
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public SetmealVO getByIdWithDish(Long id) {
+        Setmeal setmeal = setmealMapper.getById(id);
+        List<SetmealDish> setmealDishes = setmealDishMapper.getBySetmealId(id);
+
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal,setmealVO);
+        setmealVO.setSetmealDishes(setmealDishes);
+
+        return setmealVO;
+    }
+
+    /**
+     * 修改套餐
+     *
+     * @param setmealDTO
+     */
+    @Override
+    public void update(SetmealDTO setmealDTO) {
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO, setmeal);
+
+        // 1.修改套餐表,执行update
+        setmealMapper.update(setmeal);
+
+        // 套餐id
+        Long setmealId = setmealDTO.getId();
+
+        // 2.删除套餐和菜品的关联关系,对setmeal_dish表执行delete
+        setmealDishMapper.deleteBySetmealId(setmealId);
+
+        List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+        setmealDishes.forEach(setmealDish ->{
+            setmealDish.setSetmealId(setmealId);
+        });
+
+        // 3.重新插入套餐和菜品的关系 insert
+        setmealDishMapper.insertBatch(setmealDishes);
+    }
+
+    /**
+     * 套餐起售、停售
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        // 起售时不能有停售菜品
+        if (status == StatusConstant.ENABLE){
+            //select a.* from dish a left join setmeal_dish b on a.id = b.dish_id where b.setmeal_id = ?
+            List<Dish> dishList = dishMapper.getBySetmealId(id);
+            if (dishList != null && dishList.size() > 0){
+                dishList.forEach(dish -> {
+                    if (StatusConstant.DISABLE == dish.getStatus()){
+                        throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                    }
+                });
+            }
+        }
+
+        Setmeal setmeal = Setmeal.builder()
+                .id(id)
+                .status(status)
+                .build();
+        setmealMapper.update(setmeal);
     }
 }
