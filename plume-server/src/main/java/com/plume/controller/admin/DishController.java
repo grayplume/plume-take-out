@@ -2,6 +2,7 @@ package com.plume.controller.admin;
 
 import com.plume.dto.DishDTO;
 import com.plume.dto.DishPageQueryDTO;
+import com.plume.entity.Dish;
 import com.plume.result.PageResult;
 import com.plume.result.Result;
 import com.plume.service.DishService;
@@ -97,6 +98,13 @@ public class DishController {
     @ApiOperation("菜品起售停售")
     public Result<String> startOrStop(@PathVariable Integer status,Long id){
         dishService.startOrStop(status,id);
+        return Result.success();
+    }
+
+    @GetMapping("/list")
+    @ApiOperation("根据分类id查询菜品")
+    public Result<List<Dish>> list(Long categoryId){
+        List<Dish> list = dishService.list(categoryId);
         return Result.success();
     }
 }
