@@ -3,4 +3,4 @@
 *.iml
 *.class
 *Test.java
-**/MdTest/
+**/com.plume.test.MdTest/

@@ -12,6 +12,11 @@ spring:
       url: jdbc:mysql://${plume.datasource.host}:${plume.datasource.port}/${plume.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${plume.datasource.username}
       password: ${plume.datasource.password}
+  redis:
+    host: ${plume.redis.host}
+    port: ${plume.redis.port}
+    password: ${plume.redis.password}
+    database: ${plume.redis.database}
 
 mybatis:
   #mapper配置文件
