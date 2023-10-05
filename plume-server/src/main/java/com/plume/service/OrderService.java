@@ -1,5 +1,6 @@
 package com.plume.service;
 
+import com.plume.dto.OrdersPageQueryDTO;
 import com.plume.dto.OrdersPaymentDTO;
 import com.plume.dto.OrdersSubmitDTO;
 import com.plume.result.PageResult;
@@ -56,4 +57,11 @@ public interface OrderService {
      * @param id
      */
     void repetition(Long id);
+
+    /**
+     * 条件搜索订单
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    PageResult conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
 }
