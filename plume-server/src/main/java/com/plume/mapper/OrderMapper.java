@@ -1,6 +1,7 @@
 package com.plume.mapper;
 
 import com.github.pagehelper.Page;
+import com.plume.dto.GoodsSalesDTO;
 import com.plume.dto.OrdersPageQueryDTO;
 import com.plume.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
@@ -67,4 +68,17 @@ public interface OrderMapper {
      * @param map
      */
     Double sumByMap(Map map);
+
+    /**
+     * 根据时间区间统计订单数量
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
+
+    /**
+     * 查询指定时间区间内的销量排名top10
+     * @return
+     */
+    List<GoodsSalesDTO> getSalesTop10(LocalDateTime begin, LocalDateTime end);
 }
