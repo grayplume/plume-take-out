@@ -5,6 +5,7 @@ import com.plume.vo.SalesTop10ReportVO;
 import com.plume.vo.TurnoverReportVO;
 import com.plume.vo.UserReportVO;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
 public interface ReportService {
@@ -40,4 +41,10 @@ public interface ReportService {
      * @return
      */
     SalesTop10ReportVO getSalesTop10(LocalDate begin, LocalDate end);
+
+    /**
+     * 导出运营报表
+     * @param response
+     */
+    void exportBusinessData(HttpServletResponse response);
 }
