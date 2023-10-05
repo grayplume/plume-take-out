@@ -18,6 +18,7 @@ import com.plume.result.PageResult;
 import com.plume.service.OrderService;
 import com.plume.utils.WeChatPayUtil;
 import com.plume.vo.OrderPaymentVO;
+import com.plume.vo.OrderStatisticsVO;
 import com.plume.vo.OrderSubmitVO;
 import com.plume.vo.OrderVO;
 import org.springframework.beans.BeanUtils;
@@ -356,4 +357,25 @@ public class OrderServiceImpl implements OrderService {
         // 将该订单对应的所有菜品信息拼接在一起
         return String.join("", orderDishList);
     }
+
+    /**
+     * 各个状态订单数量统计
+     *
+     * @return
+     */
+    @Override
+    public OrderStatisticsVO statistics() {
+        // 根据状态，分别查询出待接单、待派送、派送中的订单数量
+        Integer toBeConfirmed = orderMapper.countStatus(Orders.TO_BE_CONFIRMED);
+        Integer confirmed = orderMapper.countStatus(Orders.CONFIRMED);
+        Integer deliveryInProgress = orderMapper.countStatus(Orders.DELIVERY_IN_PROGRESS);
+
+        // 将查询出的数据封装到orderStatisticsVO中响应
+        OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
+        orderStatisticsVO.setToBeConfirmed(toBeConfirmed);
+        orderStatisticsVO.setConfirmed(confirmed);
+        orderStatisticsVO.setDeliveryInProgress(deliveryInProgress);
+        return orderStatisticsVO;
+    }
+
 }

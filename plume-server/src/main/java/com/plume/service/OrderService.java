@@ -5,6 +5,7 @@ import com.plume.dto.OrdersPaymentDTO;
 import com.plume.dto.OrdersSubmitDTO;
 import com.plume.result.PageResult;
 import com.plume.vo.OrderPaymentVO;
+import com.plume.vo.OrderStatisticsVO;
 import com.plume.vo.OrderSubmitVO;
 import com.plume.vo.OrderVO;
 
@@ -64,4 +65,10 @@ public interface OrderService {
      * @return
      */
     PageResult conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    /**
+     * 各个状态订单数量统计
+     * @return
+     */
+    OrderStatisticsVO statistics();
 }
